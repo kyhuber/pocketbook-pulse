@@ -32,32 +32,55 @@
   </div>
 </template>
   
-  <script>
-  import { ref } from 'vue';
-  import { auth } from '../firebase.mjs';
-  
-  export default {
-    data() {
-      return {
-        email: '',
-        password: '',
-      };
+<script>
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { auth } from '../firebase.mjs';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { db } from '../firebase.mjs';
+import { doc, setDoc } from 'firebase/firestore';
+
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      signupError: '', // To store any signup errors
+    };
+  },
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    return { router, route };
+  },
+  methods: {
+    async handleSignup() {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          this.email,
+          this.password
+        );
+        const user = userCredential.user;
+        // Now create a user profile document in Firestore
+        await setDoc(doc(db, "users", user.uid), {
+          email: this.email,
+          // Any other initial fields you want to set
+        });
+        // Reset form fields
+        this.email = '';
+        this.password = '';
+        // Redirect to the dashboard or another route
+        this.$router.push('/dashboard');
+      } catch (error) {
+        this.signupError = error.message;
+        console.error("Error during signup:", error.message);
+      }
     },
-    methods: {
-      async handleSignup() {
-        try {
-          const userCredential = await auth.createUserWithEmailAndPassword(
-            this.email,
-            this.password
-          );
-          // Handle successful signup here, e.g., redirect or update UI
-        } catch (error) {
-          console.error(error.message); // Handle signup errors
-        }
-      },
-    },
-  };
-  </script>
+  },
+};
+</script>
+
   
   <style scoped>
 .signup-container {

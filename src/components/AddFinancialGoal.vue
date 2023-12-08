@@ -50,7 +50,7 @@
   
   <script>
   import { ref } from 'vue';
-  import { db } from '../firebaseConfig';
+  import { db } from '../firebase.mjs';
   import { collection, addDoc } from 'firebase/firestore';
   
   export default {

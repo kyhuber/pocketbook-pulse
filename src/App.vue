@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <!-- Display TopNavbar only when the user is logged in -->
+    <TopNavbar v-if="user" />
+
     <div v-if="user" class="welcome-container">
       <p>Welcome, {{ user.displayName }}!</p>
       <button @click="signOut" class="button signout-button">Sign Out</button>
@@ -13,19 +16,19 @@
         <main class="modal-content">
           <Login @userLoggedIn="handleUserLoggedIn" />
         </main>
-      <footer class="modal-footer">
-        <p class="new-user-text">
-          New to Pocketbook Pulse?
-          <button class="toggle-signup" @click="toggleSignupForm">
-            <span v-if="showSignupForm">&#9650;</span>
-            <span v-else>&#9660;</span>
-          </button>
-        </p>
-        <Signup v-if="showSignupForm" />
-      </footer>
+        <footer class="modal-footer">
+          <p class="new-user-text">
+            New to Pocketbook Pulse?
+            <button class="toggle-signup" @click="toggleSignupForm">
+              <span v-if="showSignupForm">&#9650;</span>
+              <span v-else>&#9660;</span>
+            </button>
+          </p>
+          <Signup v-if="showSignupForm" />
+        </footer>
       </div>
     </div>
-  <Dashboard v-if="user" />
+    <Dashboard v-if="user" />
   </div>
 </template>
 
@@ -36,8 +39,10 @@ import Login from './components/login.vue';
 import Signup from './components/signup.vue';
 import Dashboard from './components/Dashboard.vue';
 import AddAccount from './components/AddAccount.vue';
-import TopNavbar from './components/TopNavbar.vue';
+import SideNavBar from './components/SideNavBar.vue';
 import AddFinancialGoal from './components/AddFinancialGoal.vue';
+import AddTangibleAsset from './components/AddTangibleAsset.vue';
+import AddLiability from './components/AddLiability.vue';
 
 export default {
   components: {
@@ -45,7 +50,10 @@ export default {
     Signup,
     Dashboard,
     AddAccount,
-    TopNavbar,
+    SideNavBar,
+    AddFinancialGoal,
+    AddTangibleAsset,
+    AddLiability,
   },
   setup() {
     const user = ref(null); // Example of using ref for reactive user state
