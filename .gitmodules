@@ -1,0 +1,3 @@
+[submodule "pocketbook-pulse-vite"]
+	path = pocketbook-pulse-vite
+	url = https://github.com/kyhuber/pocketbookpulse.git
