@@ -1,4 +1,3 @@
-
 <template>
   <div id="app">
     <header>
@@ -13,7 +12,8 @@
       </div>
       <div v-else>
         <!-- Content for non-authenticated users -->
-        <login @userLoggedIn="handleUserLoggedIn" />
+        <Login @userLoggedIn="handleUserLoggedIn" />
+        <Signup /> <!-- Include the Signup component here -->
       </div>
     </main>
   </div>
@@ -21,39 +21,24 @@
 
 <script>
 import { ref } from 'vue';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-
-import login from './components/login.svelte'; // Import your login component
+import { auth } from './firebase.mjs'; // Import Firebase auth from your firebase.mjs file
+import Login from './components/Login.vue'; // Adjust the path to your Login component
+import Signup from './components/Signup.vue'; // Import the Signup component
 
 export default {
-  setup() {
-    const user = ref(null);
-
-    // Observe the authentication state
-    firebase.auth().onAuthStateChanged((authUser) => {
-      user.value = authUser;
-    });
-
-    // Sign out method
-    const signOut = async () => {
-      try {
-        await firebase.auth().signOut();
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-
-    // Handle user logged in event from login component
-    const handleUserLoggedIn = (loggedInUser) => {
-      user.value = loggedInUser;
-    };
-
+  components: {
+    Login, // Register the Login component
+    Signup, // Register the Signup component
+  },
+  data() {
     return {
-      user,
-      signOut,
-      handleUserLoggedIn,
+      loginError: null,
     };
+  },
+  methods: {
+    handleLoginSuccess() {
+      // Handle successful login here, e.g., redirect or update UI
+    },
   },
 };
 </script>
