@@ -1,53 +1,110 @@
-/* style.css */
-
 /* Reset some default browser styles */
-body, h1, h2, h3, p {
+body, h1, h2, h3, p, button, input {
   margin: 0;
   padding: 0;
+  border: 0;
+  font-family: Arial, sans-serif; /* Consistent font family */
 }
 
 /* Set a global font family and background color */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+  background-color: #f0f0f0; /* Light grey background */
 }
 
-/* Create a container for your content */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full viewport height */
+  padding: 20px; /* Padding to prevent content from touching the edges */
 }
 
-/* Style your buttons */
-.button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #007bff;
+/* Centering the modal and giving it a max-width */
+.login-modal {
+  background-color: #fff; /* White background for the modal */
+  width: 100%;
+  max-width: 400px; /* Adjust the max-width as needed */
+  margin: auto; /* Centering the modal */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+  border-radius: 8px; /* Rounded corners for the modal */
+}
+
+/* Styling for header inside the modal */
+.modal-header {
+  background-color: #000; /* Black background to match the header */
   color: #fff;
-  border: none;
+  padding: 20px;
+  text-align: center;
+  border-top-left-radius: 8px; /* Rounded corners for the top of the modal */
+  border-top-right-radius: 8px;
+}
+
+/* Styling for content inside the modal */
+.modal-content {
+  padding: 20px; /* Padding inside the modal content */
+}
+
+/* Style for the form elements */
+.form-input {
+  width: calc(100% - 40px); /* Full width minus padding */
+  padding: 12px 20px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc; /* Subtle border for inputs */
   border-radius: 4px;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+/* Styling for buttons */
+.button {
+  display: block; /* Ensure buttons take full width */
+  padding: 10px 20px;
+  background-color: #000; /* Black background for buttons */
+  color: #fff;
+  border-radius: 20px; /* Rounded corners for buttons */
   cursor: pointer;
   transition: background-color 0.3s ease;
+  text-align: center; /* Center text in buttons */
+  margin: 10px 0; /* Margin around buttons */
 }
 
+/* Hover effect for buttons */
 .button:hover {
-  background-color: #0056b3;
+  background-color: #333; /* Slightly lighter black on hover */
 }
 
-/* Style your form elements */
-.form-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+/* Footer within the modal */
+.modal-footer {
+  padding: 20px;
+  background-color: #f1f1f1; /* Light grey background for the footer */
+  border-bottom-left-radius: 8px; /* Rounded corners for the bottom of the modal */
+  border-bottom-right-radius: 8px;
+  text-align: center; /* Center align footer text */
 }
 
-/* Create a header style */
-.header {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 0;
-  text-align: center;
+/* Styling for the "New to Pocketbook Pulse?" text */
+.new-user-text {
+  font-size: 1.1em;
+  color: #333;
+  margin: 20px 0; /* Space above and below the text */
+  cursor: pointer; /* Indicates this text is clickable */
+}
+
+/* Style for the toggle arrow in the footer */
+.toggle-signup {
+  background: none;
+  cursor: pointer;
+  border: none;
+  display: inline; /* Keep the arrow inline with the text */
+  padding: 0 5px; /* Padding around the arrow for easier clicking */
+  font-size: 1.5em; /* Larger font size for the arrow */
+}
+
+/* Ensure links look consistent */
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
