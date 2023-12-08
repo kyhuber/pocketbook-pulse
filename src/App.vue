@@ -31,17 +31,21 @@
 
 <script>
 import { ref } from 'vue';
-import { auth } from './firebase.mjs'; // Import Firebase auth from your firebase.mjs file
-import Login from './components/login.vue'; // Adjust the path to your Login component
-import Signup from './components/signup.vue'; // Import the Signup component
-import Dashboard from './components/Dashboard.vue'; // Adjust the path to your Dashboard component
-
+import { auth } from './firebase.mjs';
+import Login from './components/login.vue';
+import Signup from './components/signup.vue';
+import Dashboard from './components/Dashboard.vue';
+import AddAccount from './components/AddAccount.vue';
+import TopNavbar from './components/TopNavbar.vue';
+import AddFinancialGoal from './components/AddFinancialGoal.vue';
 
 export default {
   components: {
     Login,
     Signup,
     Dashboard,
+    AddAccount,
+    TopNavbar,
   },
   setup() {
     const user = ref(null); // Example of using ref for reactive user state
