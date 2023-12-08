@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <!-- Display TopNavbar only when the user is logged in -->
-    <TopNavbar v-if="user" />
+    <!-- Display SideNavbar only when the user is logged in -->
+    <SideNavBar v-if="user" />
 
     <div v-if="user" class="welcome-container">
       <p>Welcome, {{ user.displayName }}!</p>

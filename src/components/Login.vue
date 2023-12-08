@@ -36,6 +36,9 @@
 </template>
 
 <script>
+import { auth } from '../firebase.mjs'; // Make sure the path is correct relative to this component
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
 export default {
   data() {
     return {
@@ -47,7 +50,7 @@ export default {
   methods: {
   async handleLogin() {
     try {
-      const userCredential = await auth.signInWithEmailAndPassword(this.email, this.password);
+      const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
       // Handle successful login here, e.g., redirect or update UI
     } catch (error) {
       this.loginError = error.message; // Display error messages to the user
