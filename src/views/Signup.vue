@@ -1,6 +1,10 @@
 <template>
   <div class="signup-container">
+    <h2 class="signup-header">Welcome to Pocketbook Pulse</h2>
+    <p class="signup-subheader">Create your account to get started.</p>
+
     <form @submit.prevent="handleSignup" class="signup-form">
+      <!-- Email input -->
       <div class="form-group">
         <label for="email" class="form-label">Email address*</label>
         <input
@@ -25,8 +29,14 @@
         />
       </div>
 
+      <div v-if="signupError" class="error-message">
+        {{ signupError }}
+      </div>
+
+      <!-- Signup button -->
       <div class="form-group">
         <button type="submit" class="button signup-button">Create Account</button>
+        <button @click="returnToHome" class="back-button">Return to Home</button>
       </div>
     </form>
   </div>
@@ -45,13 +55,16 @@ export default {
     return {
       email: '',
       password: '',
-      signupError: '', // To store any signup errors
+      signupError: '',
     };
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
-    return { router, route };
+    const returnToHome = () => {
+      router.push('/');
+    }
+    return { router, route, returnToHome };
   },
   methods: {
     async handleSignup() {
@@ -73,16 +86,31 @@ export default {
         // Redirect to the dashboard or another route
         this.$router.push('/dashboard');
       } catch (error) {
-        this.signupError = error.message;
-        console.error("Error during signup:", error.message);
-      }
+      if (error.code === 'auth/email-already-in-use') {
+          this.signupError = 'This email address is already in use.';
+        } else {
+          this.signupError = 'An error occurred during signup.';
+          console.error('Error during signup:', error.message);
+        }
+    }
     },
   },
 };
 </script>
 
   
-  <style scoped>
+<style scoped>
+.signup-header {
+  text-align: center;
+  color: #333; /* Or any color that fits the design */
+  margin-bottom: 20px;
+}
+
+.signup-subheader {
+  text-align: center;
+  color: #555; /* A lighter shade for the subheader */
+  margin-bottom: 30px;
+}
 .signup-container {
   background-color: #fff;
   padding: 20px;
@@ -98,41 +126,32 @@ export default {
   flex-direction: column;
 }
 
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.form-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
 .button {
-  display: inline-block;
+  display: block; /* Change to block to allow full width */
   padding: 10px 20px;
-  background-color: #000;
+  margin: 5px 0; /* Adjusted for spacing between buttons */
   color: #fff;
   border: none;
-  border-radius: 20px;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-transform: uppercase;
-}
-
-.button:hover {
-  background-color: #444;
+  text-align: center;
 }
 
 .signup-button {
+  background-color: #000;
   font-weight: bold;
+  position: center;
+}
+
+.signup-button:hover {
+  background-color: #444;
+}
+
+.error-message {
+  color: #e57373; /* A softer shade of red */
+  margin-top: 10px;
+  font-size: 0.9em;
 }
 </style>
-  

@@ -1,5 +1,8 @@
 <template>
   <div class="login-container">
+    <h2 class="login-header">Welcome back to Pocketbook Pulse</h2>
+    <p class="login-subheader">Enter your credentials to pick up where you left off.</p>
+
     <form @submit.prevent="handleLogin" class="login-form">
       <div class="form-group">
         <label for="email" class="form-label">Email address*</label>
@@ -30,6 +33,7 @@
 
       <div class="form-group">
         <button type="submit" class="button login-button">Sign In</button>
+      <button @click="returnToHome" class="back-button">Return to Home</button>
       </div>
     </form>
   </div>
@@ -38,6 +42,7 @@
 <script>
 import { auth } from '../firebase.mjs'; // Make sure the path is correct relative to this component
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from 'vue-router';
 
 export default {
   data() {
@@ -47,11 +52,18 @@ export default {
       loginError: '',
     };
   },
+  setup() {
+    const router = useRouter();
+    const returnToHome = () => {
+      router.push('/');
+    };
+    return { returnToHome };
+  },
   methods: {
   async handleLogin() {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
-      // Handle successful login here, e.g., redirect or update UI
+      this.$router.push('/dashboard');
     } catch (error) {
       this.loginError = error.message; // Display error messages to the user
     }
@@ -61,6 +73,18 @@ export default {
 </script>
 
 <style scoped>
+
+.login-header {
+  text-align: center;
+  color: #333; /* Or any color that fits the design */
+  margin-bottom: 20px;
+}
+
+.login-subheader {
+  text-align: center;
+  color: #555; /* A lighter shade for the subheader */
+  margin-bottom: 30px;
+}
 .login-container {
   background-color: #fff;
   padding: 20px;
@@ -84,15 +108,20 @@ export default {
   display: block;
   margin-bottom: 10px;
   font-weight: bold;
+  color: #333
 }
 
 .form-input {
-  width: 100%; /* Full width to match container */
-  padding: 12px 20px; /* Updated padding to match global styles */
-  margin-bottom: 15px; /* Consistent margin for spacing */
-  border: 1px solid #ccc; /* Subtle border color */
-  border-radius: 4px; /* Consistent border-radius */
-  box-sizing: border-box; /* Ensures padding is included in width */
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  border-color: #1e88e5; /* Or use a color that matches your site's theme */
+  outline: none;
 }
 
 .forgot-password {

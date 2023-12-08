@@ -9,45 +9,84 @@
       <router-link to="/accounts" class="nav-item">Accounts</router-link>
       <router-link to="/assets" class="nav-item">Assets</router-link>
       <router-link to="/liabilities" class="nav-item">Liabilities</router-link>
-      <!-- Repeat for other navigation links -->
+      <router-link to="/cashflows" class="nav-item">Cash Flows</router-link>
     </nav>
+    <button class="sign-out" @click="signOut">Sign Out</button>
   </aside>
 </template>
 
+<script>
+import { auth } from '../firebase.mjs';
+import { useRouter } from 'vue-router';
+
+export default {
+  setup() {
+    const router = useRouter();
+
+    const signOut = async () => {
+      try {
+        await auth.signOut();
+        router.push('/'); // Redirect to Home page after signing out
+      } catch (error) {
+        console.error('Error signing out:', error);
+        // Handle any errors here (e.g., show an error message)
+      }
+    };
+
+    return {
+      signOut,
+    };
+  },
+};
+</script>
+
 <style scoped>
 .sidebar {
-  width: 250px; /* Adjust width as needed */
-  height: 100vh; /* Full viewport height */
-  background-color: #333; /* Dark background for sidebar */
+  position: fixed; /* Fixed position to the side of the window */
+  top: 0; /* Align to the top */
+  left: 0; /* Align to the left */
+  width: 250px; /* Width of the sidebar */
+  height: 100%; /* Full height of the viewport */
+  background-color: #073b4c; /* A professional dark blue color */
   color: white;
-  padding: 1rem;
   box-sizing: border-box;
-}
-
-.brand-container {
-  padding: 0.5rem 0;
-  margin-bottom: 1rem; /* Space below brand/logo */
-}
-
-.nav-menu {
+  padding: 1rem;
   display: flex;
-  flex-direction: column; /* Stack nav items vertically */
+  flex-direction: column;
+  justify-content: space-between; /* Pushes the bottom content to the end */
 }
 
+/* Sign Out button at the bottom of the sidebar */
+.sign-out {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sign-out:hover {
+  background-color: #1d3557; /* A lighter shade for hover effect */
+}
+
+/* Navigation links styling */
 .nav-item {
   padding: 0.5rem 1rem;
   text-decoration: none;
   color: white;
-  transition: background-color 0.3s;
+  display: block; /* Make the links fill the horizontal space */
+  margin-bottom: 0.5rem; /* Space between links */
 }
 
 .nav-item:hover {
-  background-color: #555; /* Highlight on hover */
+  background-color: #1d3557; /* A lighter shade for hover effect */
 }
 
-/* Assuming you are using Vue Router, style active links */
-.router-link-exact-active {
-  background-color: #555;
+/* Main content styles */
+.main-content {
+  margin-left: 250px; /* Push main content to the right */
+  padding: 20px; /* Padding around the content */
+  background-color: #f0f0f0; /* Light grey background for content area */
 }
 </style>
-
