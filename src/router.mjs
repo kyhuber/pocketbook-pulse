@@ -1,17 +1,44 @@
 // src/router.mjs
 
 import { createRouter, createWebHistory } from 'vue-router';
+import { auth } from './firebase.mjs';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import Signup from './views/Signup.vue';
 import Dashboard from './views/Dashboard.vue';
-import { auth } from './firebase.mjs';
+import Accounts from './components/Accounts.vue';
+import AddAccount from './components/AddAccount.vue';
+import AddFinancialGoal from './components/AddFinancialGoal.vue';
+import AddLiability from './components/AddLiability.vue';
+import AddTangibleAsset from './components/AddTangibleAsset.vue';
+import Analysis from './components/Analysis.vue';
+import BalanceInput from './components/BalanceInput.vue';
+import CashFlows from './components/CashFlows.vue';
+import FinancialGoals from './components/FinancialGoals.vue';
+import FinancialSnapshot from './components/FinancialSnapshot.vue';
+import IncomeExpenseInput from './components/IncomeExpenseInput.vue';
+import UserProfile from './components/UserProfile.vue';
+import Visualize from './components/Visualize.vue';
+// Import the auth instance if needed for route guarding
 
 const routes = [
   { path: '/', component: Home },
-    { path: '/login', component: Login },
+  { path: '/login', component: Login },
   { path: '/signup', component: Signup },
   { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
+  { path: '/accounts', component: Accounts, meta: { requiresAuth: true } },
+  { path: '/addaccount', component: AddAccount, meta: { requiresAuth: true } },
+  { path: '/addfinancialgoal', component: AddFinancialGoal, meta: { requiresAuth: true } },
+  { path: '/addliability', component: AddLiability, meta: { requiresAuth: true } },
+  { path: '/addtangibleasset', component: AddTangibleAsset, meta: { requiresAuth: true } },
+  { path: '/analysis', component: Analysis, meta: { requiresAuth: true } },
+  { path: '/balanceinput', component: BalanceInput, meta: { requiresAuth: true } },
+  { path: '/cashflows', component: CashFlows, meta: { requiresAuth: true } },
+  { path: '/financialgoals', component: FinancialGoals, meta: { requiresAuth: true } },
+  { path: '/financialsnapshot', component: FinancialSnapshot, meta: { requiresAuth: true } },
+  { path: '/incomeexpenseinput', component: IncomeExpenseInput, meta: { requiresAuth: true } },
+  { path: '/userprofile', component: UserProfile, meta: { requiresAuth: true } },
+  { path: '/visualize', component: Visualize, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({
@@ -22,16 +49,20 @@ const router = createRouter({
 // Global navigation guard
 router.beforeEach((to, from, next) => {
   // Check if the route requires authentication
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  
-  // Check if the user is authenticated
-  const isAuthenticated = auth.currentUser;
-
-  if (requiresAuth && !isAuthenticated) {
-    // Redirect the user to the Home page if they are not authenticated
-    next('/');
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // Check if the user is authenticated
+    if (auth.currentUser) {
+      // User is authenticated, allow access to the route
+      next();
+    } else {
+      // User is not authenticated, redirect to the login page
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath } // Optional: carry the target route to the login page
+      });
+    }
   } else {
-    // Allow the route to proceed as normal if the user is authenticated or if the route does not require authentication
+    // Route does not require authentication, allow access
     next();
   }
 });

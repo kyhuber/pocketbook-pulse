@@ -23,6 +23,7 @@
           v-model="password"
           required
           class="form-input"
+          autocomplete="current-password"
         />
         <div class="forgot-password">
           <a href="#">Forgot password?</a>
@@ -98,30 +99,6 @@ export default {
 .login-form {
   display: flex;
   flex-direction: column;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: #333
-}
-
-.form-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  transition: border-color 0.2s;
-}
-
-.form-input:focus {
-  border-color: #1e88e5; /* Or use a color that matches your site's theme */
-  outline: none;
 }
 
 .forgot-password {

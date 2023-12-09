@@ -86,7 +86,7 @@
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
-    background: #fff;
+    background-color: #32424A; /* A professional dark color */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
@@ -109,6 +109,8 @@
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    background-color: #ffffff;; /* Or any other preferred color */
+    color: #32424A /* This will set the text color to white */
   }
   
   .add-account form button {

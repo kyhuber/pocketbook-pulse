@@ -7,18 +7,30 @@
   </template>
   
   <script>
+  import { useUserState } from '../userState'; // Adjust the path as necessary
   import { auth } from '../firebase.mjs';
+  import { useRouter } from 'vue-router';
   
   export default {
-    methods: {
-      signOut() {
-        auth.signOut(); // Firebase sign-out method
-      },
+    setup() {
+      const { user } = useUserState();
+      const router = useRouter();
+
+      // Method to sign out the user
+      const signOut = () => {
+        auth.signOut()
+          .then(() => {
+            router.push('/login');
+          })
+          .catch((error) => {
+            console.error('Sign out error:', error);
+          });
+      };
+
+      return {
+        user,
+        signOut,
+      };
     },
   };
   </script>
-  
-  <style scoped>
-  /* Add your styles for the dashboard here */
-  </style>
-  

@@ -20,6 +20,14 @@ body {
   padding: 20px; /* Padding to prevent content from touching the edges */
 }
 
+.main-content {
+  margin-left: 250px; /* Push main content to the right */
+  padding: 20px; /* Padding around the content */
+  background-color: #FFF; /* White background for content area */
+  min-height: calc(100vh - 40px); /* Height minus padding */
+  color: #333; /* Dark text for contrast */
+}
+
 /* Centering the modal and giving it a max-width */
 .login-modal {
   background-color: #37474f; /* Darker background for the modal */

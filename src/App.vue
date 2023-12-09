@@ -1,35 +1,30 @@
+<!-- App.vue -->
 <template>
   <div id="app">
-    <!-- Display SideNavBar only when the user is logged in -->
     <SideNavBar v-if="user" />
-
-    <!-- The router-view will handle rendering the appropriate component based on the route -->
-    <router-view v-else />
+    <router-view />
   </div>
 </template>
 
 <script>
+import SideNavBar from './components/SideNavBar.vue';
 import { ref, onMounted } from 'vue';
 import { auth } from './firebase.mjs';
-import SideNavBar from './components/SideNavBar.vue';
 
 export default {
   components: {
-    SideNavBar,
+    SideNavBar
   },
   setup() {
     const user = ref(null);
 
-    // Listen for auth state changes
     onMounted(() => {
-      auth.onAuthStateChanged((usr) => {
-        user.value = usr;
+      auth.onAuthStateChanged((firebaseUser) => {
+        user.value = firebaseUser;
       });
     });
 
-    return {
-      user,
-    };
-  },
+    return { user };
+  }
 };
 </script>

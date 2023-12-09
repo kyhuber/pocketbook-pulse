@@ -1,15 +1,17 @@
 <template>
   <aside class="sidenavbar">
     <div class="brand-container">
-      <router-link to="/">Pocketbook Pulse</router-link>
+      <router-link to="/" class="brand">Pocketbook Pulse</router-link>
     </div>
     <nav class="nav-menu">
-      <router-link to="/financial-snapshot" class="nav-item">Financial Snapshot</router-link>
-      <!-- Dropdown menu can be implemented with Vue.js logic if needed -->
+      <router-link to="/dashboard" class="nav-item">Dashboard</router-link>
+      <router-link to="/financialsnapshot" class="nav-item">Financial Snapshot</router-link>
       <router-link to="/accounts" class="nav-item">Accounts</router-link>
-      <router-link to="/assets" class="nav-item">Assets</router-link>
-      <router-link to="/liabilities" class="nav-item">Liabilities</router-link>
+      <router-link to="/financialgoals" class="nav-item">Financial Goals</router-link>
+      <router-link to="/analysis" class="nav-item">Analysis</router-link>
       <router-link to="/cashflows" class="nav-item">Cash Flows</router-link>
+      <router-link to="/userprofile" class="nav-item">User Profile</router-link>
+      <router-link to="/visualize" class="nav-item">Visualize</router-link>
     </nav>
     <button class="sign-out" @click="signOut">Sign Out</button>
   </aside>
@@ -41,19 +43,20 @@ export default {
 </script>
 
 <style scoped>
-.sidebar {
+.sidenavbar {
   position: fixed; /* Fixed position to the side of the window */
   top: 0; /* Align to the top */
   left: 0; /* Align to the left */
   width: 250px; /* Width of the sidebar */
   height: 100%; /* Full height of the viewport */
-  background-color: #073b4c; /* A professional dark blue color */
-  color: white;
+  background-color: #32424A; /* A professional dark color */
+  color: #E0F2F1; /* Light text color for readability */
   box-sizing: border-box;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Pushes the bottom content to the end */
+  z-index: 1000; /* High z-index to ensure it's on top */
 }
 
 /* Sign Out button at the bottom of the sidebar */
