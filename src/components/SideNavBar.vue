@@ -49,8 +49,8 @@ export default {
   left: 0; /* Align to the left */
   width: 250px; /* Width of the sidebar */
   height: 100%; /* Full height of the viewport */
-  background-color: #32424A; /* A professional dark color */
-  color: #E0F2F1; /* Light text color for readability */
+  background-color: #2E3B4E; /* Dark Slate Blue */
+  color: #FFFFFF; /* White text */
   box-sizing: border-box;
   padding: 1rem;
   display: flex;

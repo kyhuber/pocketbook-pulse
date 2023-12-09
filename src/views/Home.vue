@@ -23,11 +23,13 @@ export default {
 }
 
 .button {
-  margin: 10px;
+  display: block;
+  margin: 20px auto;
   padding: 10px 20px;
   background-color: #1e88e5; /* Example button color */
   color: white;
   text-decoration: none;
+  width: 90px;
   border-radius: 5px;
   transition: background-color 0.3s;
 }
