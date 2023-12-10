@@ -16,39 +16,41 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import { useUserState } from '../userState';
-import { db } from '../firebase.mjs';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+  import { ref, onMounted } from 'vue';
+  import { useUserStore } from '../stores/user';
+  import { db } from '../firebase.mjs';
+  import { collection, getDocs, query, where } from 'firebase/firestore';
 
-export default {
-  name: 'Accounts',
-  setup() {
-    const { user } = useUserState();
-    const accounts = ref([]);
+  export default {
+    name: 'Accounts',
+    setup() {
+      const userStore = useUserStore();
+      const accounts = ref([]);
 
-    const fetchAccounts = async () => {
-      try {
-        if (user.value) {
-          const q = query(collection(db, "accounts"), where("userId", "==", user.value.uid));
-          const querySnapshot = await getDocs(q);
-          accounts.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        } else {
-          console.error("User is not authenticated or not available.");
+      const fetchAccounts = async () => {
+        try {
+          if (userStore.user) {
+            const q = query(collection(db, "accounts"), where("userId", "==", userStore.user.uid));
+            const querySnapshot = await getDocs(q);
+            accounts.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          } else {
+            console.error("User is not authenticated or not available.");
+          }
+        } catch (error) {
+          console.error("Error fetching accounts:", error);
         }
-      } catch (error) {
-        console.error("Error fetching accounts:", error);
-      }
-    };
+      };
 
-    onMounted(fetchAccounts);
+      onMounted(() => {
+        userStore.fetchUser(); // Ensure the user is fetched on component mount
+        fetchAccounts();
+      });
 
-    return {
-      accounts,
-      fetchAccounts,
-    };
-  },
-};
+      return {
+        accounts,
+      };
+    },
+  };
 </script>
 
 <style scoped>

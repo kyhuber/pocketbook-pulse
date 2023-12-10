@@ -43,72 +43,52 @@
 </template>
   
 <script>
-import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { auth } from '../firebase.mjs';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { db } from '../firebase.mjs';
-import { doc, setDoc } from 'firebase/firestore';
+  import { useRouter } from 'vue-router';
+  import { useUserStore } from '../stores/userStore';
 
-export default {
-  data() {
-    return {
-      email: '',
-      password: '',
-      signupError: '',
-    };
-  },
-  setup() {
-    const router = useRouter();
-    const route = useRoute();
-    const returnToHome = () => {
-      router.push('/');
-    }
-    return { router, route, returnToHome };
-  },
-  methods: {
-    async handleSignup() {
-      try {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          this.email,
-          this.password
-        );
-        const user = userCredential.user;
-        // Now create a user profile document in Firestore
-        await setDoc(doc(db, "users", user.uid), {
-          email: this.email,
-          // Any other initial fields you want to set
-        });
-        // Reset form fields
-        this.email = '';
-        this.password = '';
-        // Redirect to the dashboard or another route
-        this.$router.push('/dashboard');
-      } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-          this.signupError = 'This email address is already in use.';
-        } else {
-          this.signupError = 'An error occurred during signup.';
-          console.error('Error during signup:', error.message);
-        }
-    }
+  export default {
+    data() {
+      return {
+        email: '',
+        password: '',
+        signupError: '',
+      };
     },
-  },
-};
-</script>
+    setup() {
+      const router = useRouter();
+      const userStore = useUserStore();
+
+      const handleSignup = async () => {
+        try {
+          await userStore.signup(this.email, this.password);
+          router.push('/dashboard'); // Redirect to dashboard on successful signup
+        } catch (error) {
+          if (error.code === 'auth/email-already-in-use') {
+            this.signupError = 'This email address is already in use.';
+          } else {
+            this.signupError = 'An error occurred during signup.';
+            console.error('Error during signup:', error.message);
+          }
+        }
+      };
+
+      return { handleSignup };
+    },
+  };
+  </script>
+
 
   
 <style scoped>
 .signup-header {
   text-align: center;
-  color: #333; /* Or any color that fits the design */
+  color: #333;
   margin-bottom: 20px;
 }
 
 .signup-subheader {
   text-align: center;
-  color: #555; /* A lighter shade for the subheader */
+  color: #555;
   margin-bottom: 30px;
 }
 .signup-container {
@@ -150,7 +130,7 @@ export default {
 }
 
 .error-message {
-  color: #e57373; /* A softer shade of red */
+  color: #e57373;
   margin-top: 10px;
   font-size: 0.9em;
 }

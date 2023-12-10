@@ -29,11 +29,12 @@
   <style scoped>
   .top-nav {
     width: 100%;
-    background-color: #32424A; /* Example color */
+    position: fixed; /* Fix it to the top of the viewport */
+    top: 0; /* Align it right at the top */
+    left: 0; /* Align it to the left edge */
+    background-color: #32424A;
     color: #ffffff;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 20px;
+    z-index: 1000;
   }
   
   .nav-content {

@@ -10,8 +10,7 @@
 <script>
 import TopNavBar from './components/TopNavBar.vue';
 import SideNavBar from './components/SideNavBar.vue';
-import { ref, onMounted } from 'vue';
-import { auth } from './firebase.mjs';
+import { useUserStore } from './stores/userStore';
 
 export default {
   components: {
@@ -19,15 +18,11 @@ export default {
     SideNavBar
   },
   setup() {
-    const user = ref(null);
+    const userStore = useUserStore();
 
-    onMounted(() => {
-      auth.onAuthStateChanged((firebaseUser) => {
-        user.value = firebaseUser;
-      });
-    });
-
-    return { user };
+    return {
+      user: userStore.user,
+    };
   }
 };
 </script>

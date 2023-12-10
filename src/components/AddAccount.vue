@@ -47,7 +47,7 @@
   import { ref } from 'vue';
   import { db } from '../firebase.mjs';
   import { collection, addDoc } from 'firebase/firestore';
-  import { auth } from '../firebase.mjs';
+  import { useUserStore } from '../stores/user';
   
   export default {
     data() {
@@ -63,17 +63,17 @@
     },
     methods: {
       async addAccount() {
-        // Check if the user is authenticated
-        if (!auth.currentUser) {
-          alert('You must be logged in to add an account.');
-          return;
+          const userStore = useUserStore(); // Use the user store
+          if (!userStore.user) {
+            alert('You must be logged in to add an account.');
+            return;
         }
 
         try {
           // Include the user ID in the account data
           const accountData = {
             ...this.account,
-            userId: auth.currentUser.uid
+            userId: userStore.user.uid
           };
 
           await addDoc(collection(db, "accounts"), accountData);

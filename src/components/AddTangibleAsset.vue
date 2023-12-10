@@ -39,58 +39,56 @@
   </template>
   
   <script>
-  import { ref } from 'vue';
-  import { db } from '../firebase.mjs';
-  import { collection, addDoc } from 'firebase/firestore';
-  
-  export default {
-    name: 'AddTangibleAsset',
-    setup() {
-      const tangibleAsset = ref({
-        assetName: '',
-        estimatedValue: 0,
-        liquidity: '',
-        notes: ''
-      });
-  
-      const addTangibleAsset = async () => {
-        // Here, we need to ensure that the user is authenticated
-        const user = auth.currentUser;
-        if (user) {
-          try {
-            // Include the user ID in the tangible asset data
-            await addDoc(collection(db, "tangibleAssets"), {
-              ...tangibleAsset.value,
-              userId: user.uid
-            });
-            alert("Tangible asset added successfully!");
-            // Reset the form
-            tangibleAsset.value = {
-              assetName: '',
-              estimatedValue: 0,
-              liquidity: '',
-              notes: ''
-            };
-          } catch (e) {
-            console.error("Error adding tangible asset:", e);
-            alert("Error adding tangible asset. Please try again.");
+    import { ref } from 'vue';
+    import { db } from '../firebase.mjs';
+    import { collection, addDoc } from 'firebase/firestore';
+    import { useUserStore } from '../stores/userStore';
+
+    export default {
+      name: 'AddTangibleAsset',
+      setup() {
+        const tangibleAsset = ref({
+          assetName: '',
+          estimatedValue: 0,
+          liquidity: '',
+          notes: ''
+        });
+
+        const userStore = useUserStore();
+
+        const addTangibleAsset = async () => {
+          if (userStore.user) {
+            try {
+              await addDoc(collection(db, "tangibleAssets"), {
+                ...tangibleAsset.value,
+                userId: userStore.user.uid
+              });
+              alert("Tangible asset added successfully!");
+              tangibleAsset.value = {
+                assetName: '',
+                estimatedValue: 0,
+                liquidity: '',
+                notes: ''
+              };
+            } catch (e) {
+              console.error("Error adding tangible asset:", e);
+              alert("Error adding tangible asset. Please try again.");
+            }
+          } else {
+            alert("You must be logged in to add a tangible asset.");
           }
-        } else {
-          alert("You must be logged in to add a tangible asset.");
-        }
-      };
-  
-      return {
-        tangibleAsset,
-        addTangibleAsset
-      };
-    }
-  };
+        };
+
+        return {
+          tangibleAsset,
+          addTangibleAsset
+        };
+      }
+    };
   </script>
   
   <style scoped>
   .add-asset-container {
-    /* Scoped styles specific to adding assets */
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
@@ -98,7 +96,6 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  
-  /* Add more styles as needed */
+
   </style>
   

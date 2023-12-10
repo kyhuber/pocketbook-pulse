@@ -1,8 +1,7 @@
 <template>
     <div class="dashboard-container">
-      <h2>Welcome to Your Dashboard</h2>
-      <p>This is where your financial data and information will be displayed.</p>
-      <!-- Dashboard-specific components and content here -->
+      <h2>Welcome to Da Dashboard</h2>
+      <p>This is where you see how rich you are!!</p>
     </div>
   </template>
   
@@ -15,6 +14,17 @@
   
   <style scoped>
   .dashboard-container {
-    /* Styles specific to dashboard view */
+    margin-left: 250px;
+    padding: 20px;
+    background: #fff;
   }
-  </style>  
+
+  h2 {
+    color: #32424A;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #546E7A; /*Slightly lighter gray */
+  }
+  </style>

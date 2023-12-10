@@ -19,7 +19,8 @@ export default {
 <style scoped>
 .home-container {
   text-align: center;
-  /* Additional styling */
+  padding: 20px;
+  background: #fff;
 }
 
 .button {

@@ -18,29 +18,31 @@
 </template>
 
 <script>
-import { auth } from '../firebase.mjs';
-import { useRouter } from 'vue-router';
+  import { useRouter } from 'vue-router';
+  import { useUserStore } from '../stores/userStore';
 
-export default {
-  setup() {
-    const router = useRouter();
+  export default {
+    setup() {
+      const router = useRouter();
+      const userStore = useUserStore();
 
-    const signOut = async () => {
-      try {
-        await auth.signOut();
-        router.push('/'); // Redirect to Home page after signing out
-      } catch (error) {
-        console.error('Error signing out:', error);
-        // Handle any errors here (e.g., show an error message)
-      }
-    };
+      const signOut = async () => {
+        try {
+          await userStore.signOut();
+          router.push('/'); // Redirect to Home page after signing out
+        } catch (error) {
+          console.error('Error signing out:', error);
+          // Handle any errors here (e.g., show an error message)
+        }
+      };
 
-    return {
-      signOut,
-    };
-  },
-};
-</script>
+      return {
+        signOut,
+      };
+    },
+  };
+  </script>
+
 
 <style scoped>
 .sidenavbar {
@@ -73,7 +75,6 @@ export default {
   background-color: #1d3557; /* A lighter shade for hover effect */
 }
 
-/* Navigation links styling */
 .nav-item {
   padding: 0.5rem 1rem;
   text-decoration: none;
@@ -85,8 +86,6 @@ export default {
 .nav-item:hover {
   background-color: #1d3557; /* A lighter shade for hover effect */
 }
-
-/* Main content styles */
 .main-content {
   margin-left: 250px; /* Push main content to the right */
   padding: 20px; /* Padding around the content */

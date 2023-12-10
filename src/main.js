@@ -1,13 +1,13 @@
 // main.js or similar entry file
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import App from './App.vue';
-import { useUserState } from './userState';
 import router from './router.mjs';
 
 const app = createApp(App);
 
+const pinia = createPinia();
+app.use(pinia);
 app.use(router);
-
-app.provide('userState', useUserState());
 
 app.mount('#app');

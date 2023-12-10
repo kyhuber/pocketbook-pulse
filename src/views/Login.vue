@@ -41,37 +41,36 @@
 </template>
 
 <script>
-import { auth } from '../firebase.mjs'; // Make sure the path is correct relative to this component
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useRouter } from 'vue-router';
+  import { useRouter } from 'vue-router';
+  import { useUserStore } from '../stores/userStore';
 
-export default {
-  data() {
-    return {
-      email: '',
-      password: '',
-      loginError: '',
-    };
-  },
-  setup() {
-    const router = useRouter();
-    const returnToHome = () => {
-      router.push('/');
-    };
-    return { returnToHome };
-  },
-  methods: {
-  async handleLogin() {
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
-      this.$router.push('/dashboard');
-    } catch (error) {
-      this.loginError = error.message; // Display error messages to the user
-    }
-  },
-  },
-};
-</script>
+  export default {
+    data() {
+      return {
+        email: '',
+        password: '',
+        loginError: '',
+      };
+    },
+    setup() {
+      const router = useRouter();
+      const userStore = useUserStore();
+
+      const handleLogin = async () => {
+        try {
+          await userStore.login(this.email, this.password);
+          router.push('/dashboard'); // Redirect to dashboard on successful login
+        } catch (error) {
+          // Set login error message
+          this.loginError = error.message;
+        }
+      };
+
+      return { handleLogin };
+    },
+  };
+  </script>
+
 
 <style scoped>
 

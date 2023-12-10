@@ -52,7 +52,7 @@
   import { ref } from 'vue';
   import { db } from '../firebase.mjs';
   import { collection, addDoc } from 'firebase/firestore';
-  import { auth } from '../firebase.mjs';
+  import { useUserStore } from '../stores/userStore';
 
   export default {
     name: 'AddFinancialGoal',
@@ -66,26 +66,31 @@
         priorityLevel: ''
       };
       const financialGoal = ref({ ...initialState });
+      const userStore = useUserStore();
 
       const addFinancialGoal = async () => {
         try {
-          if (auth.currentUser) {
-            const goalData = { ...financialGoal.value, userId: auth.currentUser.uid };
-            await addDoc(collection(db, "financialGoals"), goalData);
-            alert("Financial goal added successfully!");
-            financialGoal.value = { ...initialState };
-          } else {
-            alert("User not authenticated.");
+          // Check if the user is authenticated
+          if (!userStore.user) {
+            alert('You must be logged in to add a financial goal.');
+            return;
           }
+
+          // Include the user ID in the financial goal data
+          const goalData = {
+            ...financialGoal.value,
+            userId: userStore.user.uid // Use the user ID from the user store
+          };
+
+          await addDoc(collection(db, "financialGoals"), goalData);
+          alert("Financial goal added successfully!");
+          financialGoal.value = { ...initialState }; // Reset to initial state
         } catch (e) {
           alert("Error adding financial goal: " + e.message);
         }
       };
 
-      return {
-        financialGoal,
-        addFinancialGoal
-      };
+      return { financialGoal, addFinancialGoal };
     }
   };
   </script>
