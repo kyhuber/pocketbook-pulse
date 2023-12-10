@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "lint": "eslint --ext .js,.vue src",
+    "lint-fix": "eslint --ext .js,.vue src --fix",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
@@ -16,6 +18,11 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.0",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-vue": "^9.19.2",
+    "prettier": "^3.1.1",
     "vite": "^5.0.0"
   }
 }

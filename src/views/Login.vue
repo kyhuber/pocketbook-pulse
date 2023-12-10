@@ -43,40 +43,34 @@
 <script>
   import { useRouter } from 'vue-router';
   import { useUserStore } from '../stores/userStore';
+  import { ref } from 'vue';
 
   export default {
-    data() {
-      return {
-        email: '',
-        password: '',
-        loginError: '',
-      };
-    },
     setup() {
+      const email = ref('');
+      const password = ref('');
       const router = useRouter();
       const userStore = useUserStore();
 
       const handleLogin = async () => {
-        try {
-          await userStore.login(this.email, this.password);
+        await userStore.login(email.value, password.value);
+        if (!userStore.error) {
           router.push('/dashboard'); // Redirect to dashboard on successful login
-        } catch (error) {
-          // Set login error message
-          this.loginError = error.message;
         }
       };
 
-      return { handleLogin };
+      return { email, password, userStore, handleLogin };
     },
   };
   </script>
+
 
 
 <style scoped>
 
 .login-header {
   text-align: center;
-  color: #333; /* Or any color that fits the design */
+  color: #333;
   margin-bottom: 20px;
 }
 
@@ -137,6 +131,6 @@ a:hover {
 }
 
 .login-button {
-  font-weight: bold; /* Maintain bold font for the login button */
+  font-weight: bold; /* Keep bold font for the login button */
 }
 </style>

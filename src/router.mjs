@@ -1,7 +1,7 @@
 // src/router.mjs
 
 import { createRouter, createWebHistory } from 'vue-router';
-import { auth } from './firebase.mjs';
+import { useUserStore } from './stores/userStore';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import Signup from './views/Signup.vue';
@@ -19,7 +19,6 @@ import FinancialSnapshot from './components/FinancialSnapshot.vue';
 import IncomeExpenseInput from './components/IncomeExpenseInput.vue';
 import UserProfile from './components/UserProfile.vue';
 import Visualize from './components/Visualize.vue';
-// Import the auth instance if needed for route guarding
 
 const routes = [
   { path: '/', component: Home },
@@ -37,7 +36,6 @@ const routes = [
   { path: '/financialgoals', component: FinancialGoals, meta: { requiresAuth: true } },
   { path: '/financialsnapshot', component: FinancialSnapshot, meta: { requiresAuth: true } },
   { path: '/incomeexpenseinput', component: IncomeExpenseInput, meta: { requiresAuth: true } },
-  { path: '/userprofile', component: UserProfile, meta: { requiresAuth: true } },
   { path: '/visualize', component: Visualize, meta: { requiresAuth: true } },
 ];
 
@@ -48,22 +46,16 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach((to, from, next) => {
-  // Check if the route requires authentication
+  const userStore = useUserStore();
+
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    // Check if the user is authenticated
-    if (auth.currentUser) {
-      // User is authenticated, allow access to the route
+    if (userStore.isAuthenticated) {
       next();
     } else {
-      // User is not authenticated, redirect to the login page
-      next({
-        path: '/login',
-        query: { redirect: to.fullPath } // Optional: carry the target route to the login page
-      });
+      next({ path: '/login', query: { redirect: to.fullPath } });
     }
   } else {
-    // Route does not require authentication, allow access
-    next();
+    next(); // Proceed if the route does not require authentication
   }
 });
 

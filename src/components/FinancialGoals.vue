@@ -22,31 +22,29 @@ import { useRouter } from 'vue-router';
 export default {
   name: 'FinancialGoals',
   setup() {
-      const financialGoals = ref([]);
-      const router = useRouter();
+    const financialGoals = ref([]);
+    const router = useRouter();
 
-      // ... existing setup code ...
+    // ... existing setup code ...
 
-      const goToAddFinancialGoal = () => {
-          router.push('/addfinancialgoal'); // Update this path if different
-      };
+    const goToAddFinancialGoal = () => {
+      router.push('/addfinancialgoal'); // Update this path if different
+    };
 
-      return {
-          financialGoals,
-          goToAddFinancialGoal
-      };
+    return {
+      financialGoals,
+      goToAddFinancialGoal
+    };
   }
 };
 </script>
 
 <style scoped>
-/* Scoped styles for FinancialGoals */
-/* ... existing styles ... */
-
 .add-goal-button {
   margin: 10px 0;
   padding: 10px 20px;
-  background-color: #1e88e5; /* Example button color */
+  background-color: #1e88e5;
+  /* Example button color */
   color: white;
   text-decoration: none;
   border: none;
@@ -56,6 +54,7 @@ export default {
 }
 
 .add-goal-button:hover {
-  background-color: #1565c0; /* Darker shade on hover */
+  background-color: #1565c0;
+  /* Darker shade on hover */
 }
 </style>

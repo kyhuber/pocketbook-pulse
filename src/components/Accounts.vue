@@ -17,7 +17,7 @@
 
 <script>
   import { ref, onMounted } from 'vue';
-  import { useUserStore } from '../stores/user';
+  import { useUserStore } from '../stores/userStore';
   import { db } from '../firebase.mjs';
   import { collection, getDocs, query, where } from 'firebase/firestore';
 
@@ -42,7 +42,7 @@
       };
 
       onMounted(() => {
-        userStore.fetchUser(); // Ensure the user is fetched on component mount
+        userStore.fetchUser();
         fetchAccounts();
       });
 

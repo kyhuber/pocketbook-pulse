@@ -47,7 +47,7 @@
   import { ref } from 'vue';
   import { db } from '../firebase.mjs';
   import { collection, addDoc } from 'firebase/firestore';
-  import { useUserStore } from '../stores/user';
+  import { useUserStore } from '../stores/userStore';
   
   export default {
     data() {

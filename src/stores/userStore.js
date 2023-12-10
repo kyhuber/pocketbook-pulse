@@ -1,19 +1,26 @@
 // src/stores/userStore.js
 import { defineStore } from 'pinia';
 import { auth } from '../firebase.mjs';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-export const useUserStore = defineStore('user', {
+export const useUserStore = defineStore('userStore', {
   state: () => ({
     user: null,
+    error: null
   }),
   actions: {
-    setUser(user) {
-      this.user = user;
+    async login(email, password) {
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        this.user = userCredential.user;
+        this.error = null;
+      } catch (error) {
+        this.error = error.message;
+      }
     },
-    fetchUser() {
-      auth.onAuthStateChanged((user) => {
-        this.setUser(user);
-      });
-    },
-  },
+    signOut() {
+      auth.signOut();
+      this.user = null;
+    }
+  }
 });
