@@ -7,26 +7,13 @@
       <!-- Email input -->
       <div class="form-group">
         <label for="email" class="form-label">Email address*</label>
-        <input
-          id="email"
-          type="email"
-          v-model="email"
-          required
-          class="form-input"
-          placeholder="Enter your email"
-        />
+        <input id="email" type="email" v-model="email" required class="form-input" placeholder="Enter your email" />
       </div>
 
       <div class="form-group">
         <label for="password" class="form-label">Password*</label>
-        <input
-          id="password"
-          type="password"
-          v-model="password"
-          required
-          class="form-input"
-          placeholder="Create a password"
-        />
+        <input id="password" type="password" v-model="password" required class="form-input"
+          placeholder="Create a password" />
       </div>
 
       <div v-if="signupError" class="error-message">
@@ -43,39 +30,38 @@
 </template>
   
 <script>
-  import { useRouter } from 'vue-router';
-  import { useUserStore } from '../stores/userStore';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useUserStore } from '../stores/userStore';
 
-  export default {
-    data() {
-      return {
-        email: '',
-        password: '',
-        signupError: '',
-      };
-    },
-    setup() {
-      const router = useRouter();
-      const userStore = useUserStore();
+export default {
+  setup() {
+    const email = ref('');
+    const password = ref('');
+    const signupError = ref('');
+    const router = useRouter();
+    const userStore = useUserStore();
 
-      const handleSignup = async () => {
-        try {
-          await userStore.signup(this.email, this.password);
-          router.push('/dashboard'); // Redirect to dashboard on successful signup
-        } catch (error) {
-          if (error.code === 'auth/email-already-in-use') {
-            this.signupError = 'This email address is already in use.';
-          } else {
-            this.signupError = 'An error occurred during signup.';
-            console.error('Error during signup:', error.message);
-          }
+    const handleSignup = async () => {
+      try {
+        await userStore.signup(email.value, password.value);
+        router.push('/dashboard'); // Redirect to dashboard on successful signup
+      } catch (error) {
+        if (error.code === 'auth/email-already-in-use') {
+          signupError.value = 'This email address is already in use.';
+        } else {
+          signupError.value = 'An error occurred during signup.';
+          console.error('Error during signup:', error.message);
         }
-      };
+      }
+    };
 
-      return { handleSignup };
-    },
-  };
-  </script>
+    // Return to Home function here, if needed
+
+    return { email, password, signupError, handleSignup };
+  },
+};
+</script>
 
 
   
@@ -91,6 +77,7 @@
   color: #555;
   margin-bottom: 30px;
 }
+
 .signup-container {
   background-color: #fff;
   padding: 20px;
@@ -107,9 +94,11 @@
 }
 
 .button {
-  display: block; /* Change to block to allow full width */
+  display: block;
+  /* Change to block to allow full width */
   padding: 10px 20px;
-  margin: 5px 0; /* Adjusted for spacing between buttons */
+  margin: 5px 0;
+  /* Adjusted for spacing between buttons */
   color: #fff;
   border: none;
   border-radius: 4px;
