@@ -2,7 +2,6 @@
 <template>
   <nav class="top-nav">
     <div class="nav-content">
-      <!-- Left side of the nav (can add logo or other links here) -->
       <div class="nav-left">
         <a href="/" class="brand">Pocketbook Pulse</a>
       </div>
@@ -14,18 +13,27 @@
     </div>
   </nav>
 </template>
-  
+
 <script>
+import { useRouter } from 'vue-router';
+import { useUserStore } from '../stores/userStore';
+
 export default {
+  setup() {
+    const userStore = useUserStore();
+    const router = useRouter();
+
+  },
+
   methods: {
     onHelpClick() {
       // Implement the logic for Help button click
-      // For example, open a help modal or redirect to a help page
       console.log("Help button clicked");
     }
   }
 };
 </script>
+
   
 <style scoped>
 .top-nav {
@@ -74,5 +82,6 @@ export default {
 
 .help-button:hover {
   background-color: #0056b3;
-}</style>
+}
+</style>
   

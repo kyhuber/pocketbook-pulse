@@ -44,26 +44,25 @@
 </template>
   
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router'; // Import useRouter
 import { db } from '../firebase.mjs';
 import { collection, addDoc } from 'firebase/firestore';
 import { useUserStore } from '../stores/userStore';
 
 export default {
-  data() {
-    return {
-      account: {
-        accountType: '',
-        institution: '',
-        hyperlink: '',
-        primary: false,
-        notes: ''
-      }
-    };
-  },
-  methods: {
-    async addAccount() {
-      const userStore = useUserStore(); // Use the user store
+  setup() {
+    const router = useRouter(); // Get the router instance
+    const userStore = useUserStore();
+    const account = ref({
+      accountType: '',
+      institution: '',
+      hyperlink: '',
+      primary: false,
+      notes: ''
+    });
+
+    const addAccount = async () => {
       if (!userStore.user) {
         alert('You must be logged in to add an account.');
         return;
@@ -72,28 +71,26 @@ export default {
       try {
         // Include the user ID in the account data
         const accountData = {
-          ...this.account,
+          ...account.value,
           userId: userStore.user.uid
         };
 
         await addDoc(collection(db, "accounts"), accountData);
         alert("Account added successfully!");
-        // Reset the form
-        this.account = {
-          accountType: '',
-          institution: '',
-          hyperlink: '',
-          primary: false,
-          notes: ''
-        };
+        router.push('/accounts'); // Redirect to Accounts.vue
       } catch (e) {
         alert("Error adding account: " + e.message);
       }
-    }
+    };
+
+    return {
+      account,
+      addAccount
+    };
   }
 };
 </script>
-  
+
 <style scoped>
 .add-account {
   max-width: 400px;
@@ -143,4 +140,5 @@ export default {
 
 .add-account form button:hover {
   background-color: #0056b3;
-}</style>  
+}
+</style>  

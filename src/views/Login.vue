@@ -50,13 +50,13 @@ export default {
 
 
     const handleLogin = async () => {
-      loading.value = true; // Set loading to true before login attempt
+      loading.value = true;
       try {
         await userStore.login(email.value, password.value);
         router.push('/dashboard');
       } catch (error) {
         console.error('Login failed:', error);
-        userStore.error = error.message; // Set error message in userStore
+        userStore.error = error.message;
       } finally {
         loading.value = false;
       }

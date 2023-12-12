@@ -20,6 +20,7 @@ import FinancialSnapshot from './components/FinancialSnapshot.vue';
 import IncomeExpenseInput from './components/IncomeExpenseInput.vue';
 import UserProfile from './components/UserProfile.vue';
 import Visualize from './components/Visualize.vue';
+import TestUserStore from './components/TestUserStore.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -38,6 +39,7 @@ const routes = [
   { path: '/financialsnapshot', component: FinancialSnapshot, meta: { requiresAuth: true } },
   { path: '/incomeexpenseinput', component: IncomeExpenseInput, meta: { requiresAuth: true } },
   { path: '/visualize', component: Visualize, meta: { requiresAuth: true } },
+  { path: '/test-user-store', component: TestUserStore },
 ];
 
 const router = createRouter({
@@ -47,10 +49,9 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach(async (to, from, next) => {
-  // Instead of using the store, use Firebase auth directly
-  const user = auth.currentUser;
+  const userStore = useUserStore();
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (user) {
+    if (userStore.user) {
       next();
     } else {
       next({ path: '/login', query: { redirect: to.fullPath } });

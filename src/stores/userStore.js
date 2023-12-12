@@ -1,7 +1,8 @@
 // src/stores/userStore.js
 import { defineStore } from 'pinia';
-import { auth } from '../firebase.mjs';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../firebase.mjs';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
+import { getDoc, doc } from 'firebase/firestore';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -12,7 +13,8 @@ export const useUserStore = defineStore('userStore', {
     async login(email, password) {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        this.user = userCredential.user;
+        console.log("Login successful:", userCredential.user); // Log the user credential
+        this.user = { uid: userCredential.user.uid, ...userCredential.user };
         this.error = null;
       } catch (error) {
         this.error = error.message;
@@ -22,11 +24,10 @@ export const useUserStore = defineStore('userStore', {
     async signup(email, password) {
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        // Handle user credential, possibly storing the user data
-        // ...
+        this.user = { uid: userCredential.user.uid, ...userCredential.user };
+        this.error = null;
       } catch (error) {
-        // Handle any errors here
-        throw error; // Rethrow the error to be caught by the component
+        this.error = error.message;
       }
     },
 
@@ -34,7 +35,11 @@ export const useUserStore = defineStore('userStore', {
       if (auth.currentUser) {
         try {
           const userDoc = await getDoc(doc(db, 'users', auth.currentUser.uid));
-          this.user = userDoc.data();
+          if (userDoc.exists()) {
+            this.user = { uid: auth.currentUser.uid, ...userDoc.data() };
+          } else {
+            console.error('User document not found.');
+          }
         } catch (error) {
           console.error('Error fetching user:', error);
         }
@@ -44,9 +49,29 @@ export const useUserStore = defineStore('userStore', {
       }
     },
 
+    // initializeAuthListener() {
+    //   onAuthStateChanged(auth, (user) => {
+    //     if (user) {
+    //       // User is signed in
+    //       this.user = user;
+    //     } else {
+    //       // User is signed out
+    //       this.user = null;
+    //     }
+    //   });
+    // },
+
+    initializeAuthListener() {
+      onAuthStateChanged(auth, (user) => {
+        console.log("Auth state changed. User:", user);
+        this.user = user;
+      });
+    },
+
     signOut() {
-      auth.signOut();
+      firebaseSignOut(auth);
       this.user = null;
+      this.error = null;
     }
   }
 });

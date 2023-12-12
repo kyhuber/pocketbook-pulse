@@ -45,7 +45,7 @@ export default {
     const handleSignup = async () => {
       try {
         await userStore.signup(email.value, password.value);
-        router.push('/dashboard'); // Redirect to dashboard on successful signup
+        router.push('/dashboard');
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
           signupError.value = 'This email address is already in use.';
@@ -63,7 +63,8 @@ export default {
     return {
       email,
       password,
-      signupError, handleSignup,
+      signupError,
+      handleSignup,
       returnToHome
     };
   },

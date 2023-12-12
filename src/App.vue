@@ -8,9 +8,9 @@
 </template>
 
 <script>
+import { useUserStore } from './stores/userStore';
 import TopNavBar from './components/TopNavBar.vue';
 import SideNavBar from './components/SideNavBar.vue';
-import { useUserStore } from './stores/userStore';
 
 export default {
   components: {
