@@ -18,6 +18,32 @@ export const useUserStore = defineStore('userStore', {
         this.error = error.message;
       }
     },
+
+    async signup(email, password) {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        // Handle user credential, possibly storing the user data
+        // ...
+      } catch (error) {
+        // Handle any errors here
+        throw error; // Rethrow the error to be caught by the component
+      }
+    },
+
+    async fetchUser() {
+      if (auth.currentUser) {
+        try {
+          const userDoc = await getDoc(doc(db, 'users', auth.currentUser.uid));
+          this.user = userDoc.data();
+        } catch (error) {
+          console.error('Error fetching user:', error);
+        }
+      } else {
+        this.user = null;
+        console.error('User is not logged in.');
+      }
+    },
+
     signOut() {
       auth.signOut();
       this.user = null;

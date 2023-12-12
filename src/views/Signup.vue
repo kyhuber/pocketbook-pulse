@@ -1,3 +1,4 @@
+<!-- Signup.vue -->
 <template>
   <div class="signup-container">
     <h2 class="signup-header">Welcome to Pocketbook Pulse</h2>
@@ -20,10 +21,9 @@
         {{ signupError }}
       </div>
 
-      <!-- Signup button -->
       <div class="form-group">
         <button type="submit" class="button signup-button">Create Account</button>
-        <button @click="returnToHome" class="back-button">Return to Home</button>
+        <button type="button" @click="returnToHome" class="back-button">Return to Home</button>
       </div>
     </form>
   </div>
@@ -36,11 +36,11 @@ import { useUserStore } from '../stores/userStore';
 
 export default {
   setup() {
+    const userStore = useUserStore();
     const email = ref('');
     const password = ref('');
     const signupError = ref('');
     const router = useRouter();
-    const userStore = useUserStore();
 
     const handleSignup = async () => {
       try {
@@ -56,9 +56,16 @@ export default {
       }
     };
 
-    // Return to Home function here, if needed
+    const returnToHome = () => {
+      router.push('/'); // Navigate to the home page
+    };
 
-    return { email, password, signupError, handleSignup };
+    return {
+      email,
+      password,
+      signupError, handleSignup,
+      returnToHome
+    };
   },
 };
 </script>

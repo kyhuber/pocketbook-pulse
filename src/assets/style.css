@@ -1,4 +1,10 @@
-body, h1, h2, h3, p, button, input {
+body,
+h1,
+h2,
+h3,
+p,
+button,
+input {
   margin: 0;
   padding: 0;
   border: 0;
@@ -21,10 +27,27 @@ body {
   padding: 20px;
 }
 
+.content-container {
+  /* General styles */
+  padding: 20px;
+  margin: 0 auto;
+  /* Center the content container */
+  background-color: #fff;
+  /* White background */
+  border-radius: 4px;
+  /* Rounded corners */
+
+  /* Shadow effect */
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+}
+
 .main-content {
-  background-color: #F5F5F5; /* Off White */
-  color: #333333; /* Dark Gray text */
-  margin-left: 250px; /* Adjust as per SideNavBar width */
+  background-color: #F5F5F5;
+  /* Off White */
+  color: #333333;
+  /* Dark Gray text */
+  margin-left: 250px;
+  /* Adjust as per SideNavBar width */
   padding: 20px;
 }
 

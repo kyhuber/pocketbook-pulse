@@ -1,73 +1,86 @@
+<!-- Login.vue -->
 <template>
   <div class="login-container">
     <h2 class="login-header">Welcome back to Pocketbook Pulse</h2>
     <p class="login-subheader">Enter your credentials to pick up where you left off.</p>
 
+    <div v-if="loading">
+    </div>
+
+    <div v-else>
+    </div>
+
     <form @submit.prevent="handleLogin" class="login-form">
       <div class="form-group">
         <label for="email" class="form-label">Email address*</label>
-        <input
-          id="email"
-          type="email"
-          v-model="email"
-          required
-          class="form-input"
-        />
+        <input id="email" type="email" v-model="email" required class="form-input" />
       </div>
 
       <div class="form-group">
         <label for="password" class="form-label">Password*</label>
-        <input
-          id="password"
-          type="password"
-          v-model="password"
-          required
-          class="form-input"
-          autocomplete="current-password"
-        />
+        <input id="password" type="password" v-model="password" required class="form-input"
+          autocomplete="current-password" />
         <div class="forgot-password">
           <a href="#">Forgot password?</a>
         </div>
       </div>
 
-      <div v-if="loginError" class="error">{{ loginError }}</div>
+      <div v-if="userStore.error && userStore.error !== null" class="error">{{ userStore.error }}</div>
 
       <div class="form-group">
         <button type="submit" class="button login-button">Sign In</button>
-      <button @click="returnToHome" class="back-button">Return to Home</button>
+        <button type="button" @click="returnToHome" class="back-button">Return to Home</button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
-  import { useRouter } from 'vue-router';
-  import { useUserStore } from '../stores/userStore';
-  import { ref } from 'vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useUserStore } from '../stores/userStore';
 
-  export default {
-    setup() {
-      const email = ref('');
-      const password = ref('');
-      const router = useRouter();
-      const userStore = useUserStore();
+export default {
+  setup() {
+    const userStore = useUserStore();
+    const email = ref('');
+    const password = ref('');
+    const loading = ref(false);
+    const router = useRouter();
 
-      const handleLogin = async () => {
+
+    const handleLogin = async () => {
+      loading.value = true; // Set loading to true before login attempt
+      try {
         await userStore.login(email.value, password.value);
-        if (!userStore.error) {
-          router.push('/dashboard'); // Redirect to dashboard on successful login
-        }
-      };
+        router.push('/dashboard');
+      } catch (error) {
+        console.error('Login failed:', error);
+        userStore.error = error.message; // Set error message in userStore
+      } finally {
+        loading.value = false;
+      }
+    };
 
-      return { email, password, userStore, handleLogin };
-    },
-  };
-  </script>
+    const returnToHome = () => {
+      router.push('/'); // Navigate to the home page
+    };
+
+    return {
+      email,
+      password,
+      handleLogin,
+      loading,
+      userStore,
+      returnToHome,
+    };
+  },
+};
+</script>
 
 
 
 <style scoped>
-
 .login-header {
   text-align: center;
   color: #333;
@@ -76,9 +89,11 @@
 
 .login-subheader {
   text-align: center;
-  color: #555; /* A lighter shade for the subheader */
+  color: #555;
+  /* A lighter shade for the subheader */
   margin-bottom: 30px;
 }
+
 .login-container {
   background-color: #fff;
   padding: 20px;
@@ -86,7 +101,8 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  margin: 0 auto; /* Remove the top margin to align with the header */
+  margin: 0 auto;
+  /* Remove the top margin to align with the header */
 }
 
 .login-form {
@@ -109,19 +125,23 @@ a:hover {
 }
 
 .button {
-  width: 100%; /* Full width to match input fields */
+  width: 100%;
+  /* Full width to match input fields */
   padding: 10px 20px;
-  background-color: #000; /* Consistent button color with global styles */
+  background-color: #000;
+  /* Consistent button color with global styles */
   color: #fff;
   border: none;
-  border-radius: 20px; /* Rounded borders for buttons */
+  border-radius: 20px;
+  /* Rounded borders for buttons */
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-transform: uppercase;
 }
 
 .button:hover {
-  background-color: #333; /* Slightly lighter black on hover */
+  background-color: #333;
+  /* Slightly lighter black on hover */
 }
 
 .error {
@@ -131,6 +151,7 @@ a:hover {
 }
 
 .login-button {
-  font-weight: bold; /* Keep bold font for the login button */
+  font-weight: bold;
+  /* Keep bold font for the login button */
 }
 </style>

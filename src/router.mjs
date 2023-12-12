@@ -2,6 +2,7 @@
 
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from './stores/userStore';
+import { auth } from './firebase.mjs';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import Signup from './views/Signup.vue';
@@ -45,11 +46,11 @@ const router = createRouter({
 });
 
 // Global navigation guard
-router.beforeEach((to, from, next) => {
-  const userStore = useUserStore();
-
+router.beforeEach(async (to, from, next) => {
+  // Instead of using the store, use Firebase auth directly
+  const user = auth.currentUser;
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (userStore.isAuthenticated) {
+    if (user) {
       next();
     } else {
       next({ path: '/login', query: { redirect: to.fullPath } });

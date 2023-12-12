@@ -1,3 +1,4 @@
+<!-- Home.vue -->
 <template>
   <div class="home-container">
     <h1>Welcome to Pocketbook Pulse</h1>
@@ -27,7 +28,8 @@ export default {
   display: block;
   margin: 20px auto;
   padding: 10px 20px;
-  background-color: #1e88e5; /* Example button color */
+  background-color: #1e88e5;
+  /* Example button color */
   color: white;
   text-decoration: none;
   width: 90px;
@@ -36,6 +38,7 @@ export default {
 }
 
 .button:hover {
-  background-color: #0d47a1; /* Darker blue on hover */
+  background-color: #0d47a1;
+  /* Darker blue on hover */
 }
 </style>

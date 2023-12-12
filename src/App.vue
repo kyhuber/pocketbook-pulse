@@ -1,7 +1,7 @@
 <!-- App.vue -->
 <template>
   <div id="app">
-    <TopNavBar v-if="user"/>
+    <TopNavBar v-if="user" />
     <SideNavBar v-if="user" />
     <router-view />
   </div>
@@ -15,7 +15,7 @@ import { useUserStore } from './stores/userStore';
 export default {
   components: {
     TopNavBar,
-    SideNavBar
+    SideNavBar,
   },
   setup() {
     const userStore = useUserStore();
