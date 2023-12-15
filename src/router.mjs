@@ -2,7 +2,7 @@
 
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from './stores/userStore';
-import { auth } from './firebase.mjs';
+import { auth } from './Firebase.mjs';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import Signup from './views/Signup.vue';
@@ -38,6 +38,7 @@ const routes = [
   { path: '/financialgoals', component: FinancialGoals, meta: { requiresAuth: true } },
   { path: '/financialsnapshot', component: FinancialSnapshot, meta: { requiresAuth: true } },
   { path: '/incomeexpenseinput', component: IncomeExpenseInput, meta: { requiresAuth: true } },
+  { path: '/userprofile', component: UserProfile, meta: { requiresAuth: true } },
   { path: '/visualize', component: Visualize, meta: { requiresAuth: true } },
   { path: '/test-user-store', component: TestUserStore },
 ];

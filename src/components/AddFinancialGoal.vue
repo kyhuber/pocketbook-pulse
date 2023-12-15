@@ -52,14 +52,16 @@
 <script>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { db } from '../firebase.mjs';
-import { collection, addDoc } from 'firebase/firestore';
 import { useUserStore } from '../stores/userStore';
+import { db } from '../Firebase.mjs';
+import { collection, addDoc } from 'firebase/firestore';
 
 export default {
   name: 'AddFinancialGoal',
-  setup() {
+  emits: ['goalAdded'], // Declare the custom event
+  setup(props, { emit }) { // Destructure emit from the context
     const router = useRouter();
+    const userStore = useUserStore();
     const initialState = {
       goalName: '',
       targetAmount: 0,
@@ -69,26 +71,24 @@ export default {
       priorityLevel: ''
     };
     const financialGoal = ref({ ...initialState });
-    const userStore = useUserStore();
 
     const addFinancialGoal = async () => {
       try {
-        // Check if the user is authenticated
         if (!userStore.user) {
           alert('You must be logged in to add a financial goal.');
           return;
         }
 
-        // Include the user ID in the financial goal data
         const goalData = {
           ...financialGoal.value,
-          userId: userStore.user.uid // Use the user ID from the user store
+          userId: userStore.user.uid
         };
 
         await addDoc(collection(db, "financialGoals"), goalData);
         alert("Financial goal added successfully!");
         financialGoal.value = { ...initialState };
-        router.push('/financialgoals'); // Redirect to FinancialGoals.vue
+        emit('goalAdded'); // Correctly use emit here
+        router.push('/financialgoals');
       } catch (e) {
         alert("Error adding financial goal: " + e.message);
       }
@@ -98,7 +98,6 @@ export default {
   }
 };
 </script>
-
   
 <style scoped>
 .add-goal-container {
@@ -168,5 +167,6 @@ export default {
 .add-goal-container form button:hover {
   background-color: #1565c0;
   /* Darker shade on hover */
-}</style>
+}
+</style>
   

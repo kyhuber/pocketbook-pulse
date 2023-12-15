@@ -85,6 +85,23 @@ body {
   box-sizing: border-box;
 }
 
+.add-item-button {
+  margin-top: 20px 0;
+  padding: 10px 20px;
+  background-color: #1e88e5;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
 .button {
   display: block;
   padding: 10px 20px;

@@ -1,11 +1,12 @@
 // src/stores/userStore.js
 import { defineStore } from 'pinia';
-import { auth, db } from '../firebase.mjs';
+import { auth, db } from '../Firebase.mjs';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
 import { getDoc, doc } from 'firebase/firestore';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
+    isLoading: false,
     user: null,
     error: null
   }),
@@ -49,22 +50,12 @@ export const useUserStore = defineStore('userStore', {
       }
     },
 
-    // initializeAuthListener() {
-    //   onAuthStateChanged(auth, (user) => {
-    //     if (user) {
-    //       // User is signed in
-    //       this.user = user;
-    //     } else {
-    //       // User is signed out
-    //       this.user = null;
-    //     }
-    //   });
-    // },
-
     initializeAuthListener() {
+      this.isLoading = true;
       onAuthStateChanged(auth, (user) => {
         console.log("Auth state changed. User:", user);
         this.user = user;
+        this.isLoading = false;
       });
     },
 

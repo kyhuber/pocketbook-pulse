@@ -46,7 +46,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router'; // Import useRouter
-import { db } from '../firebase.mjs';
+import { db } from '../Firebase.mjs';
 import { collection, addDoc } from 'firebase/firestore';
 import { useUserStore } from '../stores/userStore';
 

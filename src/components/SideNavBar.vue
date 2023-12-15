@@ -48,27 +48,18 @@ export default {
 <style scoped>
 .sidenavbar {
   position: fixed;
-  /* Fixed position to the side of the window */
   top: 0;
-  /* Align to the top */
   left: 0;
-  /* Align to the left */
   width: 250px;
-  /* Width of the sidebar */
   height: 100%;
-  /* Full height of the viewport */
   background-color: #2E3B4E;
-  /* Dark Slate Blue */
   color: #FFFFFF;
-  /* White text */
   box-sizing: border-box;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* Pushes the bottom content to the end */
   z-index: 1000;
-  /* High z-index to ensure it's on top */
 }
 
 /* Sign Out button at the bottom of the sidebar */
@@ -108,4 +99,5 @@ export default {
   /* Padding around the content */
   background-color: #f0f0f0;
   /* Light grey background for content area */
-}</style>
+}
+</style>
